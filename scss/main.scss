@@ -1,8 +1,12 @@
 @use './abstract/variables.scss' as *;
+
+//common styles for browser
 body{
     min-height: 100vh;
     background-color: #b5f0dc;
 }
+
+//universal flex rule
 .flex_rule{
 display: flex;
 justify-content: center;
@@ -10,31 +14,78 @@ align-items: center;
     
 }
 
-.main_wrapper{
+//main card style for "LogIn" and "SignUp" pages
+.main_wrapper {
     flex-direction: column;
-    // min-height: 90vh;
-    // background-color: white;
-    border-radius: 50px;
-    height: auto;
+    background-color: rgb(240, 243, 243);
+    border-radius: 20px; // 50px ცოტა ბევრი იყო, 20px უფრო სუფთაა
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 30px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-}
-.login_form {
-    flex-direction: column;
-    gap: 15px;
-    input, button{
-        border-radius: 5px;
+    
+    header {
+        margin-bottom: 25px;
+        h1 {
+            font-size: 28px;
+            color: #333;
+        }
     }
 }
 
-.login_form input, .login_form button{
+//fom style
+.login_form {
+    flex-direction: column;
+    gap: 15px;
     width: 100%;
-    padding: 10px;
+    margin-bottom: 20px;
+
+    input, button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        outline: none;
+    }
+
+    input:focus {
+        border-color: #b5f0dc; // ფოკუსისას ჩარჩო რომ შეიფეროს
+    }
+
+    button {
+        background-color: #333;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        transition: background 0.2s;
+
+        &:hover {
+            background-color: #444;
+        }
+    }
 }
-.login_action{
-    margin-top: 10px;
-    font-size: 10px;
+
+//link styles
+.login_action {
     display: flex;
-    justify-content: space-around;
-    width: 80%;
+    justify-content: space-around; 
+    width: 100%;
+    font-size: 13px;
+    
+    a {
+        color: #2b8a6a;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    span {
+        color: #677;
+    }
 }
