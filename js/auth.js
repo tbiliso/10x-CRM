@@ -1,5 +1,6 @@
 // Save "signUp" objects to variables
-const signForm = document.querySelector('.login_form');
+const signForm = document.getElementById('reg_form');
+const loginForm = document.getElementById('login_form');
 
 const nameInput = document.querySelector('.login_form input:nth-of-type(1)');
 const emailInput = document.querySelector('.login_form input:nth-of-type(2)');
@@ -32,5 +33,49 @@ if (signForm) {
 
         // When password length and confirmation are valid
         console.log("Validation passed! Ready to save:", { fullName, email, company, password }); // გასწორდა console.log
+
+        //save entered values as JSON
+        const userObj = {
+            fullName: fullName,
+            email: email,
+            company: company,
+            password: password
+        };
+
+        const userText = JSON.stringify(userObj);
+        localStorage.setItem(email, userText);
+
+        //when info saved, go to login page
+        window.location.href = "index.html";
     });
-}
+};
+
+//log In block
+if (loginForm){
+    loginForm.addEventListener('submit', function(event){
+        event.preventDefault();
+
+        const loginEmail = document.getElementById('log_mail').value.trim();
+        const loginPassword = document.getElementById('log_pass').value.trim();
+
+        const userText = localStorage.getItem(loginEmail);
+        //if user not exist, return
+        if(!userText){
+            alert("User not found!");
+            return;
+        }
+        const userObj = JSON.parse(userText);
+
+        //check password
+        //when doesnot match:
+        if(userObj.password !== loginPassword){
+            alert("Incorrect password!");
+            return;
+        }
+
+        //when password match
+        alert("Login successful!!");
+        window.location.href = "dashboard.html"
+
+    });
+};

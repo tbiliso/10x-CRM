@@ -16,6 +16,7 @@ align-items: center;
 
 //main card style for "LogIn" and "SignUp" pages
 .main_wrapper {
+    display: flex;
     flex-direction: column;
     background-color: rgb(240, 243, 243);
     border-radius: 20px; // 50px ცოტა ბევრი იყო, 20px უფრო სუფთაა
@@ -35,6 +36,7 @@ align-items: center;
 
 //fom style
 .login_form {
+    display: flex;
     flex-direction: column;
     gap: 15px;
     width: 100%;
