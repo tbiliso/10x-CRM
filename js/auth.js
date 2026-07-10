@@ -72,9 +72,11 @@ if (loginForm){
             alert("Incorrect password!");
             return;
         }
+        
 
         //when password match
         alert("Login successful!!");
+        localStorage.setItem('currentUser', JSON.stringify(userObj));
         window.location.href = "dashboard.html"
 
     });
