@@ -12,26 +12,47 @@ else {
     console.log(activeUserObj);
 
 
-    // document.getElementById('welcome_user').textContent = `Welcome, ${activeUserObj.fullName}!`;
+    document.getElementById('welcome_user').textContent = `Welcome, ${activeUserObj.fullName}!`;
     document.getElementById('logout_butt').addEventListener('click', function(){
         localStorage.removeItem('currentUser');
             window.location.href = 'index.html';
     });
-    // get countryes
-    async function fetchCountries() {
+    // get Clients
+    async function fetchClients() {
         try{
-            const response = await fetch('https://date.nager.at/api/v3/AvailableCountries');
+            const response = await fetch('https://dummyjson.com/users?limit=20');
 
             if(!response.ok) throw new Error('Failed to fetch countries');
 
-            const countriesData = await response.json();
-            //აქ ჩემთვის ვამოწმებ მოაქვს თუ არა
-            console.log('ქვეყნების მასივი:', countriesData);
+            const data = await response.json();
+            
+            //save user data
+            const clients = data.users;
+            console.log('კლიენტების მასივი:', clients);
+
+            //fill table
+            const tableBody = document.getElementById('clients_table_body');
+            tableBody.innerHTML = '';
+
+            clients.forEach(client => {
+                // create new row for client new
+                const row = document.createElement('tr');
+                //Prepair the row
+                row.innerHTML = `
+        <td><img src="${client.image}" alt="${client.firstName}" width="40" height="40" style="border-radius: 50%;"></td>
+        <td>${client.firstName} ${client.lastName}</td>
+        <td>${client.email}</td>
+        <td>${client.gender}</td>
+        <td><button class="delete_btn" data-id="${client.id}" style="background-color: #d9534f; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Delete</button></td>
+    `
+    tableBody.appendChild(row);
+            });
+            //add row to table
         } catch (error) {
             console.error('Error fetching countries:', error);
         } 
 
     }
-    fetchCountries();
+    fetchClients();
 }
 
