@@ -22,7 +22,7 @@ else {
         try{
             const response = await fetch('https://dummyjson.com/users?limit=20');
 
-            if(!response.ok) throw new Error('Failed to fetch countries');
+            if(!response.ok) throw new Error('Failed to fetch clients');
 
             const data = await response.json();
             
@@ -47,9 +47,24 @@ else {
     `
     tableBody.appendChild(row);
             });
+            //delete client with event delegation
+            tableBody.addEventListener('click', function(event){
+                //prove it's delete button
+                if(event.target.classList.contains('delete_btn')){
+                    //catch clientsId, which we want to remove
+                    const clientId = event.target.getAttribute('data-id');
+                    console.log(`Delete client with ID: ${clientId}`);
+
+                    //find nearest row and delete 
+                    const row = event.target.closest('tr');
+                    if (row) {
+                        row.remove();
+                    }
+                }
+            })
             //add row to table
         } catch (error) {
-            console.error('Error fetching countries:', error);
+            console.error('Error fetching clients:', error);
         } 
 
     }
