@@ -2,11 +2,11 @@
 const signForm = document.getElementById('reg_form');
 const loginForm = document.getElementById('login_form');
 
-const nameInput = document.querySelector('.login_form input:nth-of-type(1)');
-const emailInput = document.querySelector('.login_form input:nth-of-type(2)');
-const companyInput = document.querySelector('.login_form input:nth-of-type(3)');
-const passwordInput = document.querySelector('.login_form input:nth-of-type(4)'); // გასწორდა document.querySelector
-const confirmPasswordInput = document.querySelector('.login_form input:nth-of-type(5)');
+const nameInput = document.querySelector('#reg_form input:nth-of-type(1)');
+const emailInput = document.querySelector('#reg_form input:nth-of-type(2)');
+const companyInput = document.querySelector('#reg_form input:nth-of-type(3)');
+const passwordInput = document.querySelector('#reg_form input:nth-of-type(4)'); // გასწორდა document.querySelector
+const confirmPasswordInput = document.querySelector('#reg_form input:nth-of-type(5)');
 
 // When we work on signUp form
 if (signForm) {
@@ -15,38 +15,52 @@ if (signForm) {
 
         // Take entered values (გადმოვიდა ივენთის შიგნით, რომ ღილაკზე დაჭერის მომენტში წაიკითხოს!)
         const fullName = nameInput.value.trim();
-        const email = emailInput.value.trim();
+        const email = emailInput.value.trim().toLowerCase();
         const company = companyInput.value.trim();
         const password = passwordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
 
+          if (fullName.length < 3) {
+            alert("fullName must be at least 3 characters long!"); // გამოსწორდა last -> at least
+            return; // Stop function working
+        }
+        // Form validation: check email format
+        if(!email.includes('@')||!email.split('@')[1].includes('.')){
+            alert("Please enter a valid email address!");
+            return;
+        }
         // Form validation: Check password length and mismatch.
         if (password.length < 8) {
             alert("Password must be at least 8 characters long!"); // გამოსწორდა last -> at least
             return; // Stop function working
         }
-
+        // Form validation: password confirmation
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return; // Stop function working
         }
 
-        // When password length and confirmation are valid
-        console.log("Validation passed! Ready to save:", { fullName, email, company, password }); // გასწორდა console.log
+        // take db from JSON
+        let crmUsers = JSON.parse(localStorage.getItem('crm_users'))||[];
 
-        //save entered values as JSON
+        //validate N5 check dublicate email
+        const emailExist = crmUsers.some(user=>user.email === email);
+        if(emailExist){
+            alert("An account with this email already exist!");
+            return;
+        }
+        //save entered values
         const userObj = {
             fullName: fullName,
             email: email,
             company: company,
             password: password
         };
-
-        const userText = JSON.stringify(userObj);
-        localStorage.setItem(email, userText);
-
-        //when info saved, go to login page
+        crmUsers.push(userObj); 
+        localStorage.setItem('crm_users',JSON.stringify(crmUsers));
+        alert("Registration successful!");
         window.location.href = "index.html";
+
     });
 };
 
@@ -55,20 +69,23 @@ if (loginForm){
     loginForm.addEventListener('submit', function(event){
         event.preventDefault();
 
-        const loginEmail = document.getElementById('log_mail').value.trim();
+        const loginEmail = document.getElementById('log_mail').value.trim().toLowerCase();
         const loginPassword = document.getElementById('log_pass').value.trim();
 
-        const userText = localStorage.getItem(loginEmail);
-        //if user not exist, return
-        if(!userText){
+        const crmUsers = JSON.parse(localStorage.getItem('crm_users'))||[];
+
+        //find mail in db
+        const matchedUser = crmUsers.find(user=>user.email === loginEmail);
+        if(!matchedUser){
             alert("User not found!");
             return;
         }
-        const userObj = JSON.parse(userText);
+
+
 
         //check password
         //when doesnot match:
-        if(userObj.password !== loginPassword){
+        if(matchedUser.password !== loginPassword){
             alert("Incorrect password!");
             return;
         }
@@ -76,8 +93,8 @@ if (loginForm){
 
         //when password match
         alert("Login successful!!");
-        localStorage.setItem('currentUser', JSON.stringify(userObj));
-        window.location.href = "dashboard.html"
+        localStorage.setItem('currentUser', JSON.stringify(matchedUser));
+        window.location.href = 'dashboard.html';
 
     });
 };

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body class="flex_rule">
 
     <main class="main_wrapper flex_rule">
@@ -13,11 +15,34 @@
             <h1 id="welcome_user">Welcome!</h1>
         </header>
 
-        <button id="logout_butt" style="background-color: #d9534f; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;">
-            Log Out
-        </button>
+        //search and filter part
+        <div class="controls">
+            <input type="text" id="search_input" placeholder="Search by name...">
+            <select id="gender_filter">
+                <option value="all">All Genders</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        //empty table simple for clients
+        <table class="crm_table">
+            <thead>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="clients_table_body"></tbody>
+        </table>
+
+
+        <button id="logout_butt">Log Out</button>
     </main>
 
     <script src="./js/dashbord.js"></script>
 </body>
+
 </html>

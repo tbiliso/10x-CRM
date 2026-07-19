@@ -9,13 +9,29 @@ if(!activeUserText){
 else {
     //text becomes JS objects
     const activeUserObj = JSON.parse(activeUserText);
-    console.log('activeUserObj');
+    console.log(activeUserObj);
 
 
-    document.getElementById('welcome_user').textContent = `Welcome, ${activeUserObj.fullName}!`;
+    // document.getElementById('welcome_user').textContent = `Welcome, ${activeUserObj.fullName}!`;
     document.getElementById('logout_butt').addEventListener('click', function(){
         localStorage.removeItem('currentUser');
-            window.localStorage.href = 'index.html'
-    })
+            window.location.href = 'index.html';
+    });
+    // get countryes
+    async function fetchCountries() {
+        try{
+            const response = await fetch('https://date.nager.at/api/v3/AvailableCountries');
+
+            if(!response.ok) throw new Error('Failed to fetch countries');
+
+            const countriesData = await response.json();
+            //აქ ჩემთვის ვამოწმებ მოაქვს თუ არა
+            console.log('ქვეყნების მასივი:', countriesData);
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        } 
+
+    }
+    fetchCountries();
 }
 
