@@ -8,7 +8,6 @@ if(!activeUserText){
 } 
 
 
-
 else {
     const activeUserObj = JSON.parse(activeUserText);
     console.log(activeUserObj);
@@ -41,6 +40,24 @@ else {
         });
     }
 
+    function filterClients(){
+        const searchText = document.getElementById('search_input').value.toLowerCase();
+        const selectedGender = document.getElementById('gender_filter').value;
+        const filteredClients = allClients.filter(client => {
+
+        const fullName = `${client.firstName} ${client.lastName}`.toLowerCase();
+        const matchesSearch = fullName.includes(searchText);
+        
+        const matchesGender = selectedGender ==='all' || client.gender === selectedGender;
+
+        return matchesSearch && matchesGender;
+        });
+        renderClients(filteredClients);
+    }
+
+
+    document.getElementById('search_input').addEventListener('input', filterClients);
+    document.getElementById('gender_filter').addEventListener('change', filterClients)
     // 
     async function fetchClients() {
         try {
@@ -79,4 +96,4 @@ else {
 
     //run function
     fetchClients();
-}
+};
